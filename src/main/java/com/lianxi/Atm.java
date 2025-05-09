@@ -104,7 +104,8 @@ public class Atm {
                     break;
                 case 5:
                     //密码修改
-                    break;
+                    updatePassword();
+                    return;
                 case 6:
                     //退出
                     System.out.println(loginAcc.getUserName()+"您退出系统成功");
@@ -118,6 +119,43 @@ public class Atm {
                     break;
                 default:
                     System.out.println("该操作不存在，请重选~~");
+            }
+        }
+    }
+
+    //密码修改
+    private void updatePassword() {
+        System.out.println("==账户密码修改==");
+        while (true) {
+            //1.提醒用户输入当前账户密码
+            System.out.println("请您输入当前账户密码：");
+            String password =sc.next();
+
+            //2.认证当前密码是否正确
+            if(loginAcc.getPassword().equals(password)){
+                //认证通过
+                while (true) {
+                    //3.真正开始修改密码
+                    System.out.println("请您输入新密码：");
+                    String newPassword =sc.next();
+
+                    System.out.println("请您再次输入确认密码：");
+                    String newPasswordOk =sc.next();
+
+                    //4.判断两次密码是否一致
+                    if(newPassword.equals(newPasswordOk)){
+                        //可以真正开始修改密码
+                        loginAcc.setPassword(newPassword);
+                        System.out.println("恭喜您，密码修改成功~~");
+                        return;
+                    }
+                    else{
+                        System.out.println("您输入的两次密码不一致~~");
+                    }
+                }
+            }
+            else{
+                System.out.println("您当前输入的密码不正确");
             }
         }
     }
