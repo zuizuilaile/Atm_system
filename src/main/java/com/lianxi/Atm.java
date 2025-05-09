@@ -20,6 +20,7 @@ public class Atm {
             switch (command) {
                 case 1:
                     //用户登录
+                    login();
                     break;
                 case 2:
                     //用户开户
@@ -40,14 +41,31 @@ public class Atm {
             System.out.println("不存在用户");
             return;
         }
-        System.out.println("请您输入您的卡号");
-        String cardId  =sc.next();
-        //3.判断卡号是否存在
-        Account acc = getAccountByCardId(cardId);
-        if(acc==null){
-            //说明不存在
-            System.out.println("您输入的卡号不存在：");
-
+        while (true) {
+            System.out.println("请您输入您的卡号");
+            String cardId  =sc.next();
+            //3.判断卡号是否存在
+            Account acc = getAccountByCardId(cardId);
+            if(acc==null){
+                //说明不存在
+                System.out.println("您输入的卡号不存在,请确认~~");
+            }
+            else{
+                //卡号存在，提醒输入密码
+                while (true) {
+                    System.out.println("请输入登录密码： ");
+                    String password =sc.next();
+                    //4.判断密码是否正确
+                    if(acc.getPassword().equals(password)){
+                        //密码正确，登陆成功
+                        System.out.println("恭喜您，"+acc.getUserName()+"成功登陆了系统，您的卡号是： " + acc.getCardId());
+                        //......
+                    }
+                    else{
+                        System.out.println("您输入的密码不正确,请确认~~");
+                    }
+                }
+            }
         }
     }
 
