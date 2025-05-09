@@ -8,6 +8,7 @@ import com.lianxi.Account;
 public class Atm {
     private ArrayList<Account> accounts = new ArrayList<>();//[]
     private Scanner sc = new Scanner(System.in);
+    private Account loginAcc;//记录登陆后的账户
 
     //启动atm系统展示欢迎界面
     public void start() {
@@ -58,8 +59,11 @@ public class Atm {
                     //4.判断密码是否正确
                     if(acc.getPassword().equals(password)){
                         //密码正确，登陆成功
+                        loginAcc = acc;
                         System.out.println("恭喜您，"+acc.getUserName()+"成功登陆了系统，您的卡号是： " + acc.getCardId());
-                        //......
+                        //展示登录后的操作界面
+                        showUserCommand();
+                        return;//跳出当前并回到页面
                     }
                     else{
                         System.out.println("您输入的密码不正确,请确认~~");
@@ -69,7 +73,59 @@ public class Atm {
         }
     }
 
+    //登陆后的操作界面
+    private void showUserCommand(){
+        while (true) {
+            System.out.println(loginAcc.getUserName()+"，您可以选择以下服务====");
+            System.out.println("1、查询账户");
+            System.out.println("2、存款");
+            System.out.println("3、取款");
+            System.out.println("4、转账");
+            System.out.println("5、密码修改");
+            System.out.println("6、退出");
+            System.out.println("7、注销当前账户");
+            int command =sc.nextInt();
+            switch (command) {
+                case 1:
+                    //查询当前账户
+                    showLoginAccount();
+                    break;
+                case 2:
+                    //存款
+                    break;
+                case 3:
+                    //取款
+                    break;
+                case 4:
+                    //转账
+                    break;
+                case 5:
+                    //密码修改
+                    break;
+                case 6:
+                    //退出
+                    System.out.println(loginAcc.getUserName()+"您退出系统成功");
+                    return;
+                case 7:
+                    //注销
+                    break;
+                default:
+                    System.out.println("该操作不存在，请重选~~");
+            }
+        }
+    }
 
+    //展示当前登录的账号信息
+
+    private void showLoginAccount(){
+        System.out.println("==当前您的账户信息如下：==");
+        System.out.println("户主" + loginAcc.getUserName());
+        System.out.println("性别" + loginAcc.getSex());
+        System.out.println("卡号" + loginAcc.getCardId());
+        System.out.println("余额" + loginAcc.getMoney());
+        System.out.println("每次取现额度" + loginAcc.getLimit());
+
+    }
 
     //完成开户操作
     private void createAccount(){
