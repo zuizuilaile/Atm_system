@@ -111,10 +111,40 @@ public class Atm {
                     return;
                 case 7:
                     //注销
+                    if(deleatAccount()){
+                        //销户成功，回到欢迎界面
+                        return;
+                    }
                     break;
                 default:
                     System.out.println("该操作不存在，请重选~~");
             }
+        }
+    }
+
+    //销户操作
+    private boolean deleatAccount() {
+        System.out.println("==进行销户操作==");
+        //1.询问用户是否确认销户
+        System.out.println("请问您确认销户吗？y/n");
+        String command = sc.next();
+        switch (command) {
+            case "y":
+                //确认销户
+                //2.判断用户的账户中是否有钱：loginAcc
+                if (loginAcc.getMoney()==0){
+                    //真的销户了
+                    accounts.remove(loginAcc);
+                    System.out.println("您好，您的账户已经销户成功");
+                    return true;
+                }
+                else{
+                    System.out.println("对不起，您的账户中存在金额，不允许销户~~");
+                    return false;
+                }
+            default:
+                System.out.println("好的，保留账户。");
+                return false;
         }
     }
 
