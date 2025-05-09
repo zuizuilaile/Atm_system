@@ -100,6 +100,7 @@ public class Atm {
                     break;
                 case 4:
                     //转账
+                    transferMoney();
                     break;
                 case 5:
                     //密码修改
@@ -113,6 +114,63 @@ public class Atm {
                     break;
                 default:
                     System.out.println("该操作不存在，请重选~~");
+            }
+        }
+    }
+
+    //转账
+    private void transferMoney() {
+        System.out.println("==用户转账==");
+        //1.判断系统中是否存在其他账户
+        if(accounts.size()<2){
+            System.out.println("当前系统中只有你一个账户，无法为其他账户转账~~");
+            return;
+        }
+
+        //2.判断自己账户余额是否足够
+        if(loginAcc.getMoney()==0){
+            System.out.println("你没钱，别转了");
+            return;
+        }
+
+        //3.真正开始转账了
+        while (true) {
+            System.out.println("请您输入对方卡号：");
+            String cardId =sc.next();
+
+            //4.判断卡号是否正确
+            Account acc = getAccountByCardId(cardId);
+            if(acc==null){
+                System.out.println("该卡号不存在~~");
+            }
+            else{
+                //对方账户存在
+                String name = "*" + acc.getUserName().substring(1);
+                System.out.println("请您输入【"+name+ "】的姓氏 ");
+                String preName =sc.next();
+                //5.判断姓氏是否正确
+                if(acc.getUserName().startsWith(preName)){
+                    while (true) {
+                        //认证通过
+                        System.out.println("请您输入转账给对方的金额：");
+                        double money =sc.nextDouble();
+                        //6.判断这个金额有没有超过自己的余额
+                        if(money<=loginAcc.getMoney()){
+                            //转给对方了
+                            //更新自己的账户余额
+                            loginAcc.setMoney(loginAcc.getMoney()-money);
+                            acc.setMoney(acc.getMoney()+money);
+                            return;//跳出转账方法
+
+                        }
+                        else{
+                            System.out.println("您没有那么多钱~~ 最多可以转"+loginAcc.getMoney());
+                        }
+                    }
+
+                }else{
+                    System.out.println("对不起，您认证的姓氏有问题~~ ");
+                }
             }
         }
     }
